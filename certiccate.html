@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sustainable Green Innovations Certificate</title>
+
+  <!-- =========================================================
+       TAILWIND
+       ========================================================= -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- =========================================================
+       HTML2CANVAS
+       ========================================================= -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- =========================================================
+       JSPDF
+       ========================================================= -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    /* =========================================================
+       THEME
+       ========================================================= */
+    :root {
+      --theme-dark-green: #073B28;
+      --theme-light-green: #E8F5EE;
+      --theme-accent-green: #10B981;
+      --theme-cyan: #06B6D4;
+      --text-dark: #042418;
+    }
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background-color: #cbd5e1;
+      font-family: Arial, sans-serif;
+    }
+
+    .no-print {
+      display: flex;
+    }
+
+    /* =========================================================
+       PREVIEW AREA
+       ========================================================= */
+    .canvas-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      min-height: calc(100vh - 120px);
+      overflow-x: auto;
+    }
+
+    /* =========================================================
+       CERTIFICATE CANVAS
+       CANONICAL SIZE: 1123 × 794
+       ========================================================= */
+    .certificate-container {
+      width: 1123px;
+      height: 794px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffffff 0%,
+          var(--theme-light-green) 100%
+        );
+
+      padding: 30px;
+
+      box-shadow:
+        0 20px 40px
+        rgba(0, 0, 0, 0.20);
+    }
+
+    /* =========================================================
+       BACKGROUND IMAGE
+       ========================================================= */
+    .globe-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      opacity: 0.75;
+
+      z-index: 1;
+
+      pointer-events: none;
+
+      -webkit-mask-image:
+        radial-gradient(
+          circle,
+          rgba(0,0,0,1) 38%,
+          rgba(0,0,0,0) 72%
+        );
+
+      mask-image:
+        radial-gradient(
+          circle,
+          rgba(0,0,0,1) 38%,
+          rgba(0,0,0,0) 72%
+        );
+    }
+
+    /* =========================================================
+       OUTER BORDER
+       ========================================================= */
+    .cert-border-outer {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+
+      border:
+        8px solid
+        var(--theme-dark-green);
+
+      padding: 6px;
+
+      z-index: 2;
+    }
+
+    /* =========================================================
+       INNER BORDER
+       ========================================================= */
+    .cert-border-inner {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+
+      border:
+        2px solid
+        var(--theme-accent-green);
+
+      box-shadow:
+        inset 0 0 15px
+        rgba(6,182,212,0.20);
+
+      padding:
+        30px
+        50px
+        20px
+        50px;
+
+      background:
+        rgba(255,255,255,0.75);
+
+      overflow: hidden;
+    }
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+    .cert-content {
+      position: relative;
+      z-index: 5;
+
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =========================================================
+       TYPOGRAPHY
+       ========================================================= */
+    .font-georgia {
+      font-family: Georgia, serif;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+    .cert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 20px;
+    }
+
+    .cert-logo {
+      width: 110px;
+      height: 110px;
+
+      object-fit: contain;
+
+      flex-shrink: 0;
+    }
+
+    .header-text {
+      flex: 1;
+
+      text-align: center;
+
+      padding: 0 20px;
+    }
+
+    .uni-title {
+      margin: 0;
+
+      color:
+        var(--theme-dark-green);
+
+      font-size: 2.2rem;
+
+      font-weight: 700;
+
+      letter-spacing: .05em;
+
+      white-space: nowrap;
+    }
+
+    .club-title {
+      margin-top: 5px;
+
+      color:
+        var(--theme-accent-green);
+
+      font-size: 1.1rem;
+
+      font-weight: 600;
+
+      letter-spacing: .15em;
+
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       TITLE
+       ========================================================= */
+    .title-block {
+      text-align: center;
+
+      margin: 10px 0;
+    }
+
+    .main-title {
+      margin: 0 0 5px 0;
+
+      color:
+        var(--theme-dark-green);
+
+      font-size: 3rem;
+
+      font-weight: bold;
+
+      text-transform: uppercase;
+
+      letter-spacing: .10em;
+
+      text-shadow:
+        1px 1px 2px
+        rgba(0,0,0,.10);
+    }
+
+    .subtitle {
+      margin: 0;
+
+      color: #444;
+
+      font-size: 1.1rem;
+
+      font-style: italic;
+    }
+
+    /* =========================================================
+       RECIPIENT
+       ========================================================= */
+    .recipient-name-container {
+      width: 100%;
+
+      text-align: center;
+
+      margin: 15px 0;
+    }
+
+    .recipient-name {
+      display: block;
+
+      width: 80%;
+
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      padding:
+        0
+        20px
+        5px;
+
+      color:
+        var(--theme-dark-green);
+
+      font-size: 3.5rem;
+
+      font-style: italic;
+
+      line-height: 1.2;
+
+      text-align: center;
+
+      border-bottom:
+        2px solid
+        var(--theme-cyan);
+
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       CITATION
+       ========================================================= */
+    .citation-text {
+      max-width: 850px;
+
+      margin: 0 auto;
+
+      color:
+        var(--text-dark);
+
+      text-align: center;
+
+      font-size: 1.15rem;
+
+      line-height: 1.8;
+    }
+
+    .track-highlight {
+      color:
+        var(--theme-accent-green);
+
+      font-weight: bold;
+
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       FOOTER
+       THREE SIGNATORIES
+       ========================================================= */
+    .cert-footer {
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+      align-items: end;
+
+      gap: 50px;
+
+      margin-top: auto;
+
+      width: 100%;
+
+      padding-top: 20px;
+    }
+
+    /* =========================================================
+       SIGNATURE BLOCK
+       ========================================================= */
+    .signature-block {
+      width: 100%;
+
+      margin-bottom: 5px;
+
+      text-align: center;
+
+      min-width: 0;
+    }
+
+    .signature-line {
+      height: 45px;
+
+      margin-bottom: 8px;
+
+      border-bottom:
+        1px solid
+        var(--text-dark);
+    }
+
+    .sig-name {
+      color:
+        var(--theme-dark-green);
+
+      font-size: 1.1rem;
+
+      font-weight: bold;
+
+      line-height: 1.25;
+
+      overflow-wrap: anywhere;
+    }
+
+    .sig-title {
+      color: #333;
+
+      font-size: .9rem;
+
+      font-style: italic;
+
+      line-height: 1.25;
+
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       EXPORTING STATE
+       ========================================================= */
+    .exporting {
+      box-shadow: none !important;
+    }
+
+    /* =========================================================
+       PRINT
+       ========================================================= */
+    @media print {
+
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        background: white;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .canvas-wrapper {
+        display: block;
+
+        width: 1123px;
+        height: 794px;
+
+        min-height: 0;
+
+        padding: 0;
+        margin: 0;
+
+        overflow: hidden;
+      }
+
+      .certificate-container {
+        width: 1123px;
+        height: 794px;
+
+        margin: 0;
+
+        padding: 30px;
+
+        box-shadow: none;
+
+        overflow: hidden;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =========================================================
+       CONTROL PANEL
+       ========================================================= -->
+
+  <div
+    class="
+      no-print
+      bg-slate-800
+      border-b
+      border-slate-700
+      p-4
+      sticky
+      top-0
+      z-50
+      shadow-md
+      justify-center
+      w-full
+      flex-col
+      items-center
+    "
+  >
+
+```
+<!-- =======================================================
+     MAIN CONTROLS
+     ======================================================= -->
+<div
+  class="
+    flex
+    flex-wrap
+    items-center
+    justify-center
+    gap-4
+    w-full
+    max-w-[1123px]
+    mb-4
+  "
+>
+
+  <div
+    class="
+      flex
+      items-center
+      gap-2
+      mr-auto
+    "
+  >
+    <span
+      class="
+        text-white
+        font-bold
+        text-sm
+        tracking-widest
+      "
+    >
+      CERTIFICATE EDITOR
+    </span>
+  </div>
+
+  <!-- PARTICIPANT -->
+  <input
+    type="text"
+    id="inputName"
+    placeholder="Participant Name"
+    value="Jane Doe"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-64
+    "
+  >
+
+  <!-- TRACK -->
+  <select
+    id="inputTrack"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-56
+    "
+  >
+    <option value="Edutech">
+      EDUTECH
+    </option>
+
+    <option value="Fintech">
+      FINTECH
+    </option>
+
+    <option
+      value="Climate Tech"
+      selected
+    >
+      CLIMATE TECH
+    </option>
+
+    <option value="Tourism & Hospitality">
+      TOURISM & HOSPITALITY
+    </option>
+
+    <option value="Social Techs">
+      SOCIAL TECHS
+    </option>
+
+    <option value="SciTech">
+      SCITECH
+    </option>
+  </select>
+
+  <!-- DOWNLOAD -->
+  <button
+    id="downloadButton"
+    type="button"
+    onclick="generatePDF()"
+    class="
+      bg-emerald-600
+      hover:bg-emerald-500
+      text-white
+      font-bold
+      text-sm
+      px-5
+      py-2
+      rounded
+      shadow
+      ml-auto
+    "
+  >
+    DOWNLOAD PDF
+  </button>
+
+</div>
+
+<!-- =======================================================
+     THREE SIGNATORIES
+     ======================================================= -->
+<div
+  class="
+    flex
+    flex-wrap
+    items-center
+    justify-center
+    gap-4
+    w-full
+    max-w-[1123px]
+  "
+>
+
+  <!-- SIGNATORY 1 -->
+  <input
+    type="text"
+    id="inputSig1Name"
+    placeholder="Signatory 1 Name"
+    value="Dr. John Smith"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-48
+    "
+  >
+
+  <input
+    type="text"
+    id="inputSig1Title"
+    placeholder="Signatory 1 Title"
+    value="Patron, Innovations Club"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-56
+    "
+  >
+
+  <div class="w-px h-6 bg-slate-600 mx-2"></div>
+
+  <!-- SIGNATORY 2 -->
+  <input
+    type="text"
+    id="inputSig2Name"
+    placeholder="Signatory 2 Name"
+    value="Jane Doe Lead"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-48
+    "
+  >
+
+  <input
+    type="text"
+    id="inputSig2Title"
+    placeholder="Signatory 2 Title"
+    value="President, Innovations Club"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-56
+    "
+  >
+
+  <div class="w-px h-6 bg-slate-600 mx-2"></div>
+
+  <!-- SIGNATORY 3 -->
+  <input
+    type="text"
+    id="inputSig3Name"
+    placeholder="Signatory 3 Name"
+    value="Prof. James Green"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-48
+    "
+  >
+
+  <input
+    type="text"
+    id="inputSig3Title"
+    placeholder="Signatory 3 Title"
+    value="Dean, School of Science"
+    class="
+      bg-slate-700
+      text-white
+      text-sm
+      rounded
+      px-3
+      py-2
+      border
+      border-slate-600
+      focus:border-emerald-500
+      focus:outline-none
+      w-56
+    "
+  >
+
+</div>
+```
+
+  </div>
+
+  <!-- =========================================================
+       CERTIFICATE
+       ========================================================= -->
+
+  <main class="canvas-wrapper">
+
+```
+<div
+  class="certificate-container"
+  id="certificate-target"
+>
+
+  <!-- =====================================================
+       BACKGROUND
+       ===================================================== -->
+  <img
+    src="background.png"
+    alt=""
+    class="globe-background"
+    id="globeBackground"
+    onerror="this.style.display='none'"
+  >
+
+  <!-- =====================================================
+       BORDERS
+       ===================================================== -->
+  <div class="cert-border-outer">
+
+    <div class="cert-border-inner">
+
+      <!-- =================================================
+           CONTENT
+           ================================================= -->
+      <div class="cert-content">
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+        <header
+          class="
+            cert-header
+            font-georgia
+          "
+        >
+
+          <img
+            src="mmulogo.png"
+            alt="MMU Logo"
+            class="cert-logo"
+            id="mmuLogo"
+            onerror="this.style.display='none'"
+          >
+
+          <div class="header-text">
+
+            <h1 class="uni-title">
+              MAASAI MARA UNIVERSITY
+            </h1>
+
+            <h2 class="club-title">
+              Innovations Club
+            </h2>
+
+          </div>
+
+          <img
+            src="innovationslogo.png"
+            alt="Innovations Logo"
+            class="cert-logo"
+            id="innovationsLogo"
+            onerror="this.style.display='none'"
+          >
+
+        </header>
+
+        <!-- =================================================
+             TITLE
+             ================================================= -->
+        <div
+          class="
+            title-block
+            font-georgia
+          "
+        >
+
+          <h1 class="main-title">
+            Certificate of Award
+          </h1>
+
+          <p class="subtitle">
+            This certificate is proudly presented to
+          </p>
+
+        </div>
+
+        <!-- =================================================
+             RECIPIENT
+             ================================================= -->
+        <div
+          class="
+            recipient-name-container
+            font-georgia
+          "
+        >
+
+          <h2
+            id="displayRecipientName"
+            class="recipient-name"
+          >
+            Jane Doe
+          </h2>
+
+        </div>
+
+        <!-- =================================================
+             CITATION
+             ================================================= -->
+        <div
+          class="
+            citation-text
+            font-georgia
+          "
+        >
+
+          For being a finalist at the
+          <strong>
+            Inaugural MMARAU Sustainable Green Innovations Challenge 2026
+          </strong>
+          under the track of
+
+          <span
+            id="displayTrackText"
+            class="track-highlight"
+          >
+            CLIMATE TECH
+          </span>
+
+          , demonstrating outstanding innovation
+          toward self-reliant graduate entrepreneurship.
+
+        </div>
+
+        <!-- =================================================
+             FOOTER / THREE SIGNATORIES
+             ================================================= -->
+        <footer
+          class="
+            cert-footer
+            font-georgia
+          "
+        >
+
+          <!-- SIGNATORY 1 -->
+          <div class="signature-block">
+
+            <div class="signature-line"></div>
+
+            <div
+              id="displaySig1Name"
+              class="sig-name"
+            >
+              Dr. John Smith
+            </div>
+
+            <div
+              id="displaySig1Title"
+              class="sig-title"
+            >
+              Patron, Innovations Club
+            </div>
+
+          </div>
+
+          <!-- SIGNATORY 2 -->
+          <div class="signature-block">
+
+            <div class="signature-line"></div>
+
+            <div
+              id="displaySig2Name"
+              class="sig-name"
+            >
+              Jane Doe Lead
+            </div>
+
+            <div
+              id="displaySig2Title"
+              class="sig-title"
+            >
+              President, Innovations Club
+            </div>
+
+          </div>
+
+          <!-- SIGNATORY 3 -->
+          <div class="signature-block">
+
+            <div class="signature-line"></div>
+
+            <div
+              id="displaySig3Name"
+              class="sig-name"
+            >
+              Prof. James Green
+            </div>
+
+            <div
+              id="displaySig3Title"
+              class="sig-title"
+            >
+              Dean, School of Science
+            </div>
+
+          </div>
+
+        </footer>
+
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </main>
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+
+  <script>
+
+    /* =========================================================
+       ELEMENT REFERENCES
+       ========================================================= */
+
+    const inputName =
+      document.getElementById("inputName");
+
+    const inputTrack =
+      document.getElementById("inputTrack");
+
+    const inputSig1Name =
+      document.getElementById("inputSig1Name");
+
+    const inputSig1Title =
+      document.getElementById("inputSig1Title");
+
+    const inputSig2Name =
+      document.getElementById("inputSig2Name");
+
+    const inputSig2Title =
+      document.getElementById("inputSig2Title");
+
+    const inputSig3Name =
+      document.getElementById("inputSig3Name");
+
+    const inputSig3Title =
+      document.getElementById("inputSig3Title");
+
+    const displayRecipientName =
+      document.getElementById("displayRecipientName");
+
+    const displayTrackText =
+      document.getElementById("displayTrackText");
+
+    const displaySig1Name =
+      document.getElementById("displaySig1Name");
+
+    const displaySig1Title =
+      document.getElementById("displaySig1Title");
+
+    const displaySig2Name =
+      document.getElementById("displaySig2Name");
+
+    const displaySig2Title =
+      document.getElementById("displaySig2Title");
+
+    const displaySig3Name =
+      document.getElementById("displaySig3Name");
+
+    const displaySig3Title =
+      document.getElementById("displaySig3Title");
+
+    const downloadButton =
+      document.getElementById("downloadButton");
+
+
+    /* =========================================================
+       SYNCHRONIZE FORM DATA
+       ========================================================= */
+
+    function syncData() {
+
+      displayRecipientName.textContent =
+        inputName.value.trim() ||
+        "[FULL NAME]";
+
+      displayTrackText.textContent =
+        inputTrack.value.toUpperCase();
+
+      displaySig1Name.textContent =
+        inputSig1Name.value.trim() ||
+        "[SIGNATORY 1 NAME]";
+
+      displaySig1Title.textContent =
+        inputSig1Title.value.trim() ||
+        "[SIGNATORY 1 TITLE]";
+
+      displaySig2Name.textContent =
+        inputSig2Name.value.trim() ||
+        "[SIGNATORY 2 NAME]";
+
+      displaySig2Title.textContent =
+        inputSig2Title.value.trim() ||
+        "[SIGNATORY 2 TITLE]";
+
+      displaySig3Name.textContent =
+        inputSig3Name.value.trim() ||
+        "[SIGNATORY 3 NAME]";
+
+      displaySig3Title.textContent =
+        inputSig3Title.value.trim() ||
+        "[SIGNATORY 3 TITLE]";
+    }
+
+
+    /* =========================================================
+       FORM EVENT LISTENERS
+       ========================================================= */
+
+    [
+      inputName,
+      inputTrack,
+
+      inputSig1Name,
+      inputSig1Title,
+
+      inputSig2Name,
+      inputSig2Title,
+
+      inputSig3Name,
+      inputSig3Title
+
+    ].forEach(element => {
+
+      element.addEventListener(
+        "input",
+        syncData
+      );
+
+      element.addEventListener(
+        "change",
+        syncData
+      );
+
+    });
+
+
+    syncData();
+
+
+    /* =========================================================
+       WAIT FOR ALL CERTIFICATE IMAGES
+       ========================================================= */
+
+    function waitForImages(container) {
+
+      const images =
+        Array.from(
+          container.querySelectorAll("img")
+        );
+
+      return Promise.all(
+
+        images.map(image => {
+
+          if (image.complete) {
+            return Promise.resolve();
+          }
+
+          return new Promise(resolve => {
+
+            image.addEventListener(
+              "load",
+              resolve,
+              { once: true }
+            );
+
+            image.addEventListener(
+              "error",
+              resolve,
+              { once: true }
+            );
+
+          });
+
+        })
+
+      );
+    }
+
+
+    /* =========================================================
+       GENERATE PDF
+       ========================================================= */
+
+    async function generatePDF() {
+
+      const certificate =
+        document.getElementById(
+          "certificate-target"
+        );
+
+      const studentName =
+        inputName.value.trim() ||
+        "Participant";
+
+      const safeName =
+        studentName
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "_");
+
+      const originalButtonText =
+        downloadButton.textContent;
+
+      try {
+
+        /* =====================================================
+           BUTTON STATE
+           ===================================================== */
+
+        downloadButton.disabled = true;
+
+        downloadButton.textContent =
+          "GENERATING PDF...";
+
+
+        /* =====================================================
+           WAIT FOR IMAGES
+           ===================================================== */
+
+        await waitForImages(
+          certificate
+        );
+
+
+        /* =====================================================
+           WAIT FOR FONTS
+           ===================================================== */
+
+        if (document.fonts) {
+
+          try {
+
+            await document.fonts.ready;
+
+          } catch (fontError) {
+
+            console.warn(
+              "Font loading warning:",
+              fontError
+            );
+
+          }
+        }
+
+
+        /* =====================================================
+           WAIT FOR BROWSER PAINT
+           ===================================================== */
+
+        await new Promise(resolve =>
+
+          requestAnimationFrame(
+            () => resolve()
+          )
+
+        );
+
+
+        /* =====================================================
+           REMOVE PREVIEW SHADOW
+           ===================================================== */
+
+        certificate.classList.add(
+          "exporting"
+        );
+
+
+        /* =====================================================
+           CAPTURE CERTIFICATE
+           ===================================================== */
+
+        const canvas =
+          await html2canvas(
+            certificate,
+            {
+              scale: 3,
+
+              useCORS: true,
+
+              allowTaint: true,
+
+              logging: false,
+
+              backgroundColor:
+                "#F8FCFA",
+
+              width: 1123,
+
+              height: 794
+            }
+          );
+
+
+        /* =====================================================
+           CREATE A4 LANDSCAPE PDF
+           ===================================================== */
+
+        const { jsPDF } =
+          window.jspdf;
+
+        const pdf =
+          new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4",
+            compress: true
+          });
+
+
+        /* =====================================================
+           A4 LANDSCAPE DIMENSIONS
+           ===================================================== */
+
+        const pageWidth = 297;
+        const pageHeight = 210;
+
+
+        /* =====================================================
+           ADD CERTIFICATE TO PDF
+           ===================================================== */
+
+        pdf.addImage(
+          canvas,
+          "PNG",
+          0,
+          0,
+          pageWidth,
+          pageHeight,
+          undefined,
+          "FAST"
+        );
+
+
+        /* =====================================================
+           SAVE PDF
+           ===================================================== */
+
+        pdf.save(
+          `Certificate_${safeName}.pdf`
+        );
+
+
+      } catch (error) {
+
+        /* =====================================================
+           ERROR
+           ===================================================== */
+
+        console.error(
+          "Certificate PDF generation failed:",
+          error
+        );
+
+        alert(
+          "The PDF could not be generated. " +
+          "Please try again or use the browser print option."
+        );
+
+
+      } finally {
+
+        /* =====================================================
+           RESTORE UI
+           ===================================================== */
+
+        certificate.classList.remove(
+          "exporting"
+        );
+
+        downloadButton.disabled =
+          false;
+
+        downloadButton.textContent =
+          originalButtonText;
+      }
+    }
+
+  </script>
+
+</body>
+</html>
